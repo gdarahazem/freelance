@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Animal index{% endblock %}
+
+{% block body %}
+    <h1>Animal index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Color</th>
+                <th>Description</th>
+                <th>Race</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for animal in animals %}
+            <tr>
+                <td>{{ animal.id }}</td>
+                <td>{{ animal.name }}</td>
+                <td>{{ animal.color }}</td>
+                <td>{{ animal.description }}</td>
+                <td> {{ animal.race.name }}</td>
+                <td>
+                    <a href="{{ path('animal_show', {'id': animal.id}) }}"class="btn btn-sm btn-dark">show</a>
+                    {% if is_granted('ROLE_EDITOR') %}
+                    <a href="{{ path('animal_edit', {'id': animal.id}) }}" class="btn btn-sm btn-warning">edit</a>
+                    {{ include('animal/_delete_form.html.twig') }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('animal_new') }}" class="btn btn-primary">Créer</a>
+{% endblock %}
